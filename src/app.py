@@ -18,10 +18,13 @@ def ping():
 
 @app.route('/objectPool')
 def objectPool():
-  used = pool.use();
+  reusable = pool.acquire();
+  print("After external acquire", pool.available())
   data = {
-    'object': pool.available(),
+    'available': pool.use(),
   }
+  pool.release(reusable)
+  print("After external release", pool.available())
   return jsonify(
     success=True,
     data=data
