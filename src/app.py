@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from libs import ObjectPool
+from libs import ObjectPool, AbstractFactory
 
 
 app = Flask(__name__)
@@ -28,4 +28,17 @@ def objectPool():
   return jsonify(
     success=True,
     data=data
+  )
+
+
+@app.route('/abstractFactory')
+def abstractFactory():
+  products = list();
+  for factory in (AbstractFactory.ConcreteFactory1(), AbstractFactory.ConcreteFactory2()):
+    product = factory.create_product();
+    products.append(product.create());
+
+  return jsonify(
+    success=True,
+    data = products
   )
